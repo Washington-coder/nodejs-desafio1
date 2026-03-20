@@ -11,7 +11,7 @@ export const routes = [
         handler: async (req, res) => {
             const task = {
                 id: randomUUID(),
-                name: req.body.name,
+                title: req.body.title,
                 description: req.body.description
             }
 

@@ -36,6 +36,7 @@ export class Dadabase {
     }
 
     select(table) {
+        this.#load()
         return this.#database[table] ?? []
     }
 }
