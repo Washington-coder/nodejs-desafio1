@@ -1,8 +1,23 @@
+import { randomUUID } from "crypto"
+
+import { Dadabase } from "./database.js"
+
+const database = new Dadabase()
+
 export const routes = [
     {
         path: '/tasks',
         method: 'POST',
-        handler: (req, res) => {
+        handler: async (req, res) => {
+            const task = {
+                id: randomUUID(),
+                name: req.body.name,
+                description: req.body.description
+            }
+
+            await database.insert('tasks', task)
+
+            res.writeHead(201)
             res.end('Criação de usuário')
         }
     },
