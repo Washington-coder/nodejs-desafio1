@@ -1,12 +1,13 @@
 import { randomUUID } from "crypto"
 
 import { Dadabase } from "./database.js"
+import { buildRoutePath } from "./utils/build-route-path.js"
 
 const database = new Dadabase()
 
 export const routes = [
     {
-        path: '/tasks',
+        path: buildRoutePath('/tasks'),
         method: 'POST',
         handler: async (req, res) => {
             const task = {
@@ -22,7 +23,7 @@ export const routes = [
         }
     },
     {
-        path: '/tasks',
+        path: buildRoutePath('/tasks'),
         method: 'GET',
         handler: async (req, res) => {
             const tasks = await database.select('tasks')
@@ -31,21 +32,26 @@ export const routes = [
         }
     },
     {
-        path: '/tasks/:id',
+        path: buildRoutePath('/tasks/:id'),
         method: 'PUT',
-        handler: (req, res) => {
-            res.end('Atualiza uma tarefa específica pelo id')
+        handler: async (req, res) => {
+            const { id } = req.params
+            const { title, description } = req.body
+
+            await database.update('tasks', id, { title, description })
+
+            res.writeHead(204).end()
         }
     },
     {
-        path: '/tasks/:id',
+        path: buildRoutePath('/tasks/:id'),
         method: 'DELETE',
         handler: (req, res) => {
             res.end('Remove uma tarefa específica pelo id')
         }
     },
     {
-        path: '/tasks/:id/completea',
+        path: buildRoutePath('/tasks/:id/completea'),
         method: 'PATCH',
         handler: (req, res) => {
             res.end('Altera o status da tarefa entre completa e não completa')
