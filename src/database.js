@@ -1,3 +1,4 @@
+import { table } from 'node:console'
 import { readFile, writeFile } from 'node:fs/promises'
 
 const databasePath = new URL('../db.json', import.meta.url)
@@ -46,6 +47,15 @@ export class Dadabase {
         if (rowIndex > -1) {
             this.#database[table][rowIndex] = { id, ...data}
             await this.#persist()
+        }
+    }
+
+    delete(table, id) {
+        const rowIndex = this.#database[table].findIndex(row => row.id === id)
+
+        if (rowIndex > -1) {
+            this.#database[table].splice(rowIndex, 1)
+            this.#persist()
         }
     }
 }

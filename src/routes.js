@@ -47,7 +47,10 @@ export const routes = [
         path: buildRoutePath('/tasks/:id'),
         method: 'DELETE',
         handler: (req, res) => {
-            res.end('Remove uma tarefa específica pelo id')
+            const { id } = req.params
+
+            database.delete('tasks', id)
+            res.writeHead(204).end()
         }
     },
     {
