@@ -24,8 +24,10 @@ export const routes = [
     {
         path: '/tasks',
         method: 'GET',
-        handler: (req, res) => {
-            res.end('Lista todas as tarefas existentes')
+        handler: async (req, res) => {
+            const tasks = await database.select('tasks')
+            res.writeHead(200)
+            res.end(JSON.stringify(tasks))
         }
     },
     {
