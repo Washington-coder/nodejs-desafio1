@@ -13,7 +13,10 @@ export const routes = [
             const task = {
                 id: randomUUID(),
                 title: req.body.title,
-                description: req.body.description
+                description: req.body.description,
+                completed_at: null,
+                created_at: new Date(),
+                updated_at: new Date()
             }
 
             await database.insert('tasks', task)
@@ -57,7 +60,11 @@ export const routes = [
         path: buildRoutePath('/tasks/:id/completea'),
         method: 'PATCH',
         handler: (req, res) => {
-            res.end('Altera o status da tarefa entre completa e não completa')
+            const { id } = req.params
+
+            database.update_completea('tasks', id)
+
+            res.writeHead(204).end()
         }
     },
 ]

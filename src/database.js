@@ -45,7 +45,23 @@ export class Dadabase {
         const rowIndex = this.#database[table].findIndex(row => row.id === id)
 
         if (rowIndex > -1) {
-            this.#database[table][rowIndex] = { id, ...data}
+            this.#database[table][rowIndex] = { id, ...data }
+            await this.#persist()
+        }
+    }
+
+    async update_completea(table, id) {
+        const rowIndex = this.#database[table].findIndex(row => row.id === id)
+
+        if (rowIndex > -1) {
+            const currentData = this.#database[table][rowIndex]
+            const completed_at = new Date()
+
+            this.#database[table][rowIndex] = {
+                ...currentData,
+                completed_at,
+                id
+            }
             await this.#persist()
         }
     }
