@@ -1,7 +1,19 @@
 import http from 'http'
+import { routes } from './routes.js';
 
 const server = http.createServer((req, res) => {
-    res.end('Hello World')
+    const { url, method } = req
+
+    const route = routes.find((route) => {
+        return route.path === url && route.method === method
+    })
+
+    if (route) {
+        return route.handler(req, res)
+    }
+
+    res.writeHead(404)
+    res.end('Rota não encontrada');
 })
 
 const PORT = 3333
