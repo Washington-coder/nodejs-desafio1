@@ -40,13 +40,9 @@ export const routes = [
         handler: async (req, res) => {
             const { id } = req.params
             const { title, description } = req.body
-            const newTaskObj = {
-                title,
-                description,
-                updated_at: new Date()
-            }
+            
 
-            await database.update('tasks', id, { ...newTaskObj })
+            await database.update('tasks', id, { title, description })
 
             res.writeHead(204).end()
         }
