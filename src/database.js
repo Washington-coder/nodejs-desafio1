@@ -45,7 +45,9 @@ export class Dadabase {
         const rowIndex = this.#database[table].findIndex(row => row.id === id)
 
         if (rowIndex > -1) {
-            this.#database[table][rowIndex] = { id, ...data }
+            const currentData = this.#database[table][rowIndex]
+            const { created_at, completed_at } = currentData
+            this.#database[table][rowIndex] = { id, ...data, completed_at, created_at }
             await this.#persist()
         }
     }
@@ -56,10 +58,12 @@ export class Dadabase {
         if (rowIndex > -1) {
             const currentData = this.#database[table][rowIndex]
             const completed_at = new Date()
+            const updated_at = new Date()
 
             this.#database[table][rowIndex] = {
                 ...currentData,
                 completed_at,
+                updated_at,
                 id
             }
             await this.#persist()
